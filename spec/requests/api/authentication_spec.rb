@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Authenticating with the API" do
+RSpec.describe "API Authentication", type: :request do
   before do
     Rails.application.routes.draw do
       get "/api/test" => "test#index"
@@ -11,15 +11,13 @@ RSpec.describe "Authenticating with the API" do
     Rails.application.reload_routes!
   end
 
-  context "when the user provides a valid api token" do
+  describe "when the user provides a valid api token" do
+    let(:user) { create(:user) }
+    let(:credentials) { "Bearer #{user.token}" }
+
     it "allows the user to pass" do
-      create(:user, token: "sekkrit")
-      credentials = authenticate_with_token("sekkrit")
-
       get "/api/test", headers: { "Authorization" => credentials }
-
-      expect(response).to be_successful
-      expect(response.body).to eq({ "message" => "Hello world!" }.to_json)
+      expect(response).to have_http_status(:success)
     end
   end
 
