@@ -4,9 +4,23 @@ RSpec.describe SessionsController, type: :controller do
   let(:user) { create(:user) }
 
   describe 'GET #new' do
-    it 'returns a successful response' do
-      get :new
-      expect(response).to be_successful
+    context 'when user is not logged in' do
+      it 'renders the login page' do
+        get :new
+        expect(response).to render_template(:new)
+      end
+    end
+
+    context 'when user is already logged in' do
+      before do
+        # Simulate a logged in user
+        allow(controller).to receive(:logged_in?).and_return(true)
+      end
+
+      it 'redirects to workouts index' do
+        get :new
+        expect(response).to redirect_to('/workouts/index')
+      end
     end
   end
 
