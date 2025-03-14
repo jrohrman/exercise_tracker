@@ -18,8 +18,15 @@
                 class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" %>
           </div>
 
-          <%= f.submit "Log in", 
-              class: "w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out mt-6 font-medium" %>
+          <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out font-medium flex items-center justify-center">
+            <span class="inline-flex items-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="loading-spinner">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span id="button-text">Log in</span>
+            </span>
+          </button>
         </div>
       <% end %>
 
@@ -30,4 +37,17 @@
       </p>
     </div>
   </div>
-</div> 
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const spinner = document.getElementById('loading-spinner');
+    const buttonText = document.getElementById('button-text');
+
+    form.addEventListener('submit', function() {
+      spinner.classList.remove('hidden');
+      buttonText.textContent = 'Logging in...';
+    });
+  });
+</script> 
