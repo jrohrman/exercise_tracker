@@ -23,7 +23,9 @@ RSpec.describe 'Authentication', type: :request do
         } 
       }
       expect(session[:user_id]).to be_nil
-      expect(response).to render_template(:new)
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include(login_path)
+      expect(flash[:alert]).to eq('Invalid email/password combination')
     end
   end
 

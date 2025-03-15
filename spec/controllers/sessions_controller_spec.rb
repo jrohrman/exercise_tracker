@@ -58,14 +58,25 @@ RSpec.describe SessionsController, type: :controller do
         expect(session[:user_id]).to be_nil
       end
 
-      it 'renders the new template' do
+      it 'responds with unprocessable entity and redirects to login path' do
         post :create, params: { 
           session: { 
             email: user.email, 
             password: 'wrongpassword' 
           } 
         }
-        expect(response).to render_template(:new)
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include(login_path)
+      end
+
+      it 'sets flash alert message' do
+        post :create, params: { 
+          session: { 
+            email: user.email, 
+            password: 'wrongpassword' 
+          } 
+        }
+        expect(flash[:alert]).to eq('Invalid email/password combination')
       end
     end
   end
