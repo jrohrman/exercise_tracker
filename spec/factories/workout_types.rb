@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :workout_type, class: 'Workout::Type' do
-    name { Faker::Sport.name }
+    sequence(:name) { |n| "#{Faker::Sport.name} #{n}" }
     # slug is generated from name in a before validation callback
     description { Faker::Lorem.sentence }
     disabled_at { nil }

@@ -1,0 +1,81 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Add New Workout Session</h1>
+      <p class="mt-2 text-gray-600">Record your workout details below</p>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <%= form_for @workout_session, url: workouts_path, html: { class: "space-y-6" } do |f| %>
+        <% if @workout_session.errors.any? %>
+          <div class="bg-red-50 border border-red-200 rounded-md p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">
+                  There were <%= pluralize(@workout_session.errors.count, 'error') %> with your submission:
+                </h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    <% @workout_session.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= f.label :type_id, "Workout Type", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.collection_select :type_id, @workout_types, :id, :name, 
+                { prompt: "Select a workout type" }, 
+                { class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" } %>
+          </div>
+
+          <div>
+            <%= f.label :duration, "Duration (minutes)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.number_field :duration, 
+                class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition",
+                placeholder: "30" %>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= f.label :start_time, "Start Time", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.datetime_local_field :start_time, 
+                class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" %>
+          </div>
+
+          <div>
+            <%= f.label :end_time, "End Time", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= f.datetime_local_field :end_time, 
+                class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.label :notes, "Notes", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.text_area :notes, 
+              rows: 4,
+              class: "w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition",
+              placeholder: "How did your workout go? Any observations or notes..." %>
+        </div>
+
+        <div class="flex justify-end space-x-4 pt-6">
+          <%= link_to "Cancel", workouts_path, 
+              class: "px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out font-medium" %>
+          <%= f.submit "Create Workout Session", 
+              class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-150 ease-in-out font-medium" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
