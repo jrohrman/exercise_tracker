@@ -2,16 +2,18 @@ class WorkoutsController < ApplicationController
   before_action :require_login, only: [:new, :create, :update]
 
   def index
-    @workout_sessions = Workout::Session.includes(:user, :type).order(created_at: :desc)
+    @workout_sessions = Workout::Session.includes(:user, :type)
+                                      .order(created_at: :desc)
+                                      .map { |session| Workout::SessionDecorator.new(session) }
   end
 
   def new
     @workout_session = Workout::Session.new
-    @workout_types = Workout::Type.all.order(:name)
+    @workout_types = Workout::Type.all
   end
 
   def show
-    @workout_session = Workout::Session.find(params[:id])
+    @workout_session = Workout::SessionDecorator.new(Workout::Session.find(params[:id]))
   end
 
   def create
