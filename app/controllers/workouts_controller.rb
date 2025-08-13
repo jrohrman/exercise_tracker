@@ -7,7 +7,7 @@ class WorkoutsController < ApplicationController
 
   def new
     @workout_session = Workout::Session.new
-    @workout_types = Workout::Type.all
+    @workout_types = Workout::Type.all.order(:name)
   end
 
   def show
